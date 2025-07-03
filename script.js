@@ -92,6 +92,7 @@ typeEffect();
 
 
 
+
 // Portfolio Section JavaScript
 
 // Animate project cards on scroll
@@ -162,20 +163,6 @@ function addProjectInteractions() {
     });
 }
 
-// Add parallax effect to section
-function addParallaxEffect() {
-    const portfolioSection = document.querySelector('.portfolio');
-    
-    if (!portfolioSection) return;
-    
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallax = scrolled * 0.2;
-        
-        portfolioSection.style.transform = `translateY(${parallax}px)`;
-    });
-}
-
 // Add typing effect to section title
 function addTypingEffect() {
     const title = document.querySelector('.portfolio-title');
@@ -224,7 +211,7 @@ function addSmoothScroll() {
     });
 }
 
-// Add CSS for ripple effect
+// Add CSS for ripple effect and loading states
 function addRippleStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -259,64 +246,158 @@ function addRippleStyles() {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
+
+        /* Loading states for images */
+        .project-image-wrapper {
+            position: relative;
+        }
+
+        .image-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent, #2ecc71);
+            font-size: 2rem;
+            z-index: 2;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(46, 204, 113, 0.3);
+            border-top: 4px solid #2ecc71;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .project-image {
+            transition: opacity 0.3s ease;
+        }
+
+        .project-image.loading {
+            opacity: 0.3;
+        }
+
+        .project-image.loaded {
+            opacity: 1;
+        }
+
+        .project-image.error {
+            opacity: 0.7;
+            filter: grayscale(1);
+        }
     `;
     document.head.appendChild(style);
 }
 
-// Add loading animation for images
+// Enhanced image loading with fallbacks and loading states
 function addImageLoadingEffect() {
     const projectImages = document.querySelectorAll('.project-image');
     
-    projectImages.forEach(img => {
-        img.addEventListener('load', function() {
-            this.style.opacity = '1';
-            this.style.transform = 'scale(1)';
-        });
+    projectImages.forEach((img, index) => {
+        const wrapper = img.closest('.project-image-wrapper');
         
-        // Set initial state
-        img.style.opacity = '0';
-        img.style.transform = 'scale(0.8)';
-        img.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        // Create loading spinner
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'image-loading';
+        loadingSpinner.innerHTML = '<div class="loading-spinner"></div>';
+        wrapper.appendChild(loadingSpinner);
+        
+        // Set initial loading state
+        img.classList.add('loading');
+        
+        // Create a new image to test loading
+        const testImg = new Image();
+        
+        // Set timeout for loading (5 seconds max)
+        const loadingTimeout = setTimeout(() => {
+            console.warn(`Image ${img.src} took too long to load, using fallback`);
+            handleImageError(img, wrapper, loadingSpinner, index);
+        }, 5000);
+        
+        testImg.onload = function() {
+            clearTimeout(loadingTimeout);
+            img.src = testImg.src;
+            img.classList.remove('loading');
+            img.classList.add('loaded');
+            loadingSpinner.remove();
+        };
+        
+        testImg.onerror = function() {
+            clearTimeout(loadingTimeout);
+            console.warn(`Failed to load image: ${img.src}`);
+            handleImageError(img, wrapper, loadingSpinner, index);
+        };
+        
+        // Start loading the image
+        testImg.src = img.src;
     });
 }
 
-// Add filter functionality (optional)
-function addProjectFilter() {
-    // This can be extended to add category filtering
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
+// Handle image loading errors with fallbacks
+function handleImageError(img, wrapper, loadingSpinner, index) {
+    // Array of fallback images from Unsplash
+    const fallbackImages = [
+        'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop',
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=250&fit=crop',
+        'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop',
+        'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop',
+        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop'
+    ];
     
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter projects
-            projectCards.forEach(card => {
-                if (filter === 'all' || card.getAttribute('data-project') === filter) {
-                    card.style.display = 'block';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 100);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
+    // Use index to cycle through fallback images
+    const fallbackSrc = fallbackImages[index % fallbackImages.length];
+    
+    // Try loading fallback image
+    const fallbackImg = new Image();
+    
+    fallbackImg.onload = function() {
+        img.src = fallbackSrc;
+        img.classList.remove('loading');
+        img.classList.add('loaded');
+        loadingSpinner.remove();
+    };
+    
+    fallbackImg.onerror = function() {
+        // If fallback also fails, show a placeholder
+        img.style.display = 'none';
+        loadingSpinner.innerHTML = '<i class="fas fa-image" style="font-size: 2rem; color: #666;"></i>';
+        loadingSpinner.style.color = '#666';
+    };
+    
+    fallbackImg.src = fallbackSrc;
+}
+
+// Preload images when they come into view
+function addLazyLoading() {
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
                 }
-            });
+            }
         });
+    }, {
+        rootMargin: '50px'
     });
+
+    const lazyImages = document.querySelectorAll('.project-image[data-src]');
+    lazyImages.forEach(img => imageObserver.observe(img));
 }
 
 // Initialize all portfolio functionality
 function initializePortfolio() {
-    // Add styles
+    // Add styles first
     addRippleStyles();
     
     // Initialize animations and interactions
@@ -325,12 +406,7 @@ function initializePortfolio() {
     addTypingEffect();
     addSmoothScroll();
     addImageLoadingEffect();
-    
-    // Optional: Add parallax (can be performance intensive)
-    // addParallaxEffect();
-    
-    // Optional: Add filter functionality
-    // addProjectFilter();
+    addLazyLoading();
     
     console.log('Portfolio section initialized successfully!');
 }
@@ -354,7 +430,6 @@ window.addEventListener('resize', () => {
         card.style.transform = '';
     });
 });
-
 
 
 

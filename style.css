@@ -287,7 +287,11 @@ footer{
     gap: 1.5rem;
 }
 
-
+.hero-socials {
+  gap: 1.2rem;
+  margin-top: 2rem;
+  margin-right: 0;
+}
     .hero{
         flex-direction: column;
         text-align: center;
