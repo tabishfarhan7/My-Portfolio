@@ -32,13 +32,13 @@ hamburger.addEventListener('click', () => {
 const profileImg = document.querySelector('.profile-img');
 
 const images = [
-  'Ghazi.png', // default
-  'profile.jpg',
-  'profile2.jpeg',
-  'profile3.jpeg',
-  'profile4.jpeg',
+  'assets/Ghazi.png', // default
+  'assets/profile.jpg',
+  'assets/profile2.jpeg',
+  'assets/profile3.jpeg',
+  'assets/profile4.jpeg',
 //   'profile5.jpeg',
-  '20.jpg'
+  'assets/20.jpg'
 ];
 
 let currentIndex = 0;
