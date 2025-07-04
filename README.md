@@ -24,7 +24,7 @@ Here are some screenshots of the site across sections:
 |--------|-------------|
 | ![Footer](assets/footer.jpeg) | ![Mobile](assets/mobile.jpeg) |
 
-> 📌 *Replace the image links above with the actual path or URLs to your images.*
+
 
 ---
 
