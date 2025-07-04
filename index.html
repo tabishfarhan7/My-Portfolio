@@ -417,53 +417,61 @@
                 </div>
 
                 <!-- Right Side - Contact Form -->
-                <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                id="name"
-                                name="name"
-                                placeholder="Your Name"
-                                class="form-input"
-                                required
-                            />
-                        </div>
-                        
-                        <div class="form-group">
-                            <input 
-                                type="email" 
-                                id="email"
-                                name="email"
-                                placeholder="Your Email"
-                                class="form-input"
-                                required
-                            />
-                        </div>
-                        
-                        <div class="form-group">
-                            <textarea 
-                                id="message"
-                                name="message"
-                                placeholder="Your message"
-                                rows="6"
-                                class="form-textarea"
-                                required
-                            ></textarea>
-                        </div>
-                        
-                        <button 
-                            type="submit"
-                            class="form-submit"
-                            id="submitBtn"
-                        >
-                            <span class="btn-text">Send</span>
-                            <span class="btn-loading" style="display: none;">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </span>
-                        </button>
-                    </form>
-                </div>
+               <div class="contact-form-wrapper">
+<form 
+    action="https://formspree.io/f/manjkzzz" 
+    method="POST" 
+    class="contact-form" 
+    id="contactForm"
+  >
+    <input type="hidden" name="_subject" value="New message from portfolio!">
+
+    <div class="form-group">
+      <input 
+        type="text" 
+        id="name"
+        name="name"
+        placeholder="Your Name"
+        class="form-input"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="email" 
+        id="email"
+        name="email"
+        placeholder="Your Email"
+        class="form-input"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <textarea 
+        id="message"
+        name="message"
+        placeholder="Your message"
+        rows="6"
+        class="form-textarea"
+        required
+      ></textarea>
+    </div>
+
+    <button 
+      type="submit"
+      class="form-submit"
+      id="submitBtn"
+    >
+      <span class="btn-text">Send</span>
+      <span class="btn-loading" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i>
+      </span>
+    </button>
+  </form>
+</div>
+
             </div>
         </div>
 

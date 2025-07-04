@@ -499,17 +499,25 @@ document.addEventListener('DOMContentLoaded', function() {
         setLoadingState(true);
         
         // Simulate form submission (replace with actual API call)
-        setTimeout(() => {
-            // Reset form
-            contactForm.reset();
-            setLoadingState(false);
-            
-            // Show success message
-            showMessage('Thank you for your message! I\'ll get back to you soon.', 'success');
-            
-            // Here you would typically send the data to your backend
-            console.log('Form data:', { name, email, message });
-        }, 2000);
+     fetch("https://formspree.io/f/manjkzzz", {
+    method: "POST",
+    body: new FormData(contactForm),
+    headers: {
+        'Accept': 'application/json'
+    }
+}).then(response => {
+    if (response.ok) {
+        contactForm.reset();
+        showMessage("Thank you for your message! I'll get back to you soon.", "success");
+    } else {
+        showMessage("Oops! Something went wrong. Try again later.", "error");
+    }
+    setLoadingState(false);
+}).catch(error => {
+    showMessage("Error submitting the form. Please check your internet.", "error");
+    setLoadingState(false);
+});
+
     });
     
     // Contact card click handlers
