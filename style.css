@@ -407,6 +407,7 @@ body{
     display: flex;                /* ✅ stack content in column */
     flex-direction: column;
     align-items: center;     
+    justify-content: center;
         
     }
     .hero h1{
@@ -415,7 +416,11 @@ body{
     }
     .hero p{
         margin-right: 0;
-        width: 100%;
+        /* width: 100%; */
+        text-align: center;
+        justify-content: center;
+        /* margin-bottom: 1rem; */
+        line-height: 1.4;
     }
     .cta-button{
         margin-right: 0;
