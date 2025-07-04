@@ -9,22 +9,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 })
 
-// navbar scroll effect 
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
 
-    window.addEventListener('scroll', () => {
-        const navbar = document.querySelector('.navbar');
-        window.scrollY > 50 ? navbar.computedStyleMap.backgroundColor = 'rgba(10,10,10,0.98)':
-        navbar.computedStyleMap.backgroundColor = 'rgba(10,10,10,0.95)';
-    })
+    if (window.scrollY > 50) {
+        navbar.style.backgroundColor = 'rgba(10,10,10,0.98)';
+    } else {
+        navbar.style.backgroundColor = 'rgba(10,10,10,0.95)';
+    }
+});
 
 
     //hamburger when clicked 
-    const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
+//     const hamburger = document.getElementById('hamburger');
+// const navLinks = document.getElementById('navLinks');
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-});
+// hamburger.addEventListener('click', () => {
+//     navLinks.classList.toggle('active');
+// });
 
 
 
@@ -58,37 +61,46 @@ setInterval(() => {
 
 
 //TypeWriter Effect 
-const textElement = document.querySelector('.typewriter-text');
-const texts = ["Hi, I'm Tabish", "Full-Stack Web Developer"];
-let textIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
+document.addEventListener("DOMContentLoaded", () => {
+  const textElement = document.querySelector('.typewriter-text');
+  const texts = ["Hi, I'm Tabish Farhan", "Full-Stack Web Developer"];
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
 
-function typeEffect() {
-  const currentText = texts[textIndex];
-  let updatedText = currentText.substring(0, charIndex);
-
-  textElement.innerHTML = updatedText;
-
-  if (!isDeleting) {
-    if (charIndex < currentText.length) {
-      charIndex++;
-      setTimeout(typeEffect, 100);
-    } else {
-      // Pause before deleting or next
-      setTimeout(() => {
-        textIndex++;
-        charIndex = 0;
-        if (textIndex < texts.length) {
-          typeEffect();
-        }
-      }, 1200);
-    }
+  if (!textElement) {
+    console.error("❌ .typewriter-text element not found.");
+    return;
   }
-}
 
-// Start typing
-typeEffect();
+  function typeEffect() {
+    const currentText = texts[textIndex];
+    if (isDeleting) {
+      charIndex--;
+    } else {
+      charIndex++;
+    }
+
+    textElement.innerHTML = currentText.substring(0, charIndex);
+
+    let typeSpeed = isDeleting ? 50 : 100;
+
+    if (!isDeleting && charIndex === currentText.length) {
+      typeSpeed = 1500;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      textIndex = (textIndex + 1) % texts.length;
+      typeSpeed = 500;
+    }
+
+    setTimeout(typeEffect, typeSpeed);
+  }
+
+  typeEffect();
+});
+
+
 
 
 
