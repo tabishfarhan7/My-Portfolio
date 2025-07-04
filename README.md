@@ -18,7 +18,7 @@ Here are some screenshots of the site across sections:
 
 | Projects | Contact |
 |----------|---------|
-| ![Projects](assets/projects.png) | ![Contact](assets/contact.png) |
+| ![Projects](assets/project.png) | ![Contact](assets/contact.png) |
 
 | Footer | Mobile View |
 |--------|-------------|
