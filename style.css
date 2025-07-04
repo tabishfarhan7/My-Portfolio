@@ -415,12 +415,13 @@ body{
         width: 100%;
     }
     .hero p{
-        margin-right: 0;
-        /* width: 100%; */
-        text-align: center;
-        justify-content: center;
-        /* margin-bottom: 1rem; */
-        line-height: 1.4;
+        .hero p{
+    margin: 0 auto 1rem auto;  /* ✅ Centers the paragraph and adds bottom margin */
+    width: 100%;               /* ✅ Full width */
+    text-align: center;        /* ✅ Centers the text */
+    line-height: 1.4;
+    padding: 0 1rem;          /* ✅ Adds some padding to prevent text touching edges */
+}
     }
     .cta-button{
         margin-right: 0;
